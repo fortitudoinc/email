@@ -1,0 +1,34 @@
+[
+    {
+        "id": "${project.parent.artifactId}.app",
+        "description": "Text description of my app, not shown to regular user",
+        "extensionPoints": [
+            {
+                "id": "subApp.apps",
+                "description": "Apps on the basic Apps App Home Page"
+            }
+        ],
+        "extensions": [
+            {
+                "id": "${project.parent.artifactId}.appId2",
+                "extensionPointId": "org.openmrs.referenceapplication.homepageLink",
+                "type": "link",
+                "label": "View All User Messages",
+                "url": "internlmsgs/viewAllMessages.page",
+                "icon": "icon-envelope",
+                "requiredPrivilege": "App: send internal messages"
+            },
+            {
+                "id": "${project.parent.artifactId}.msgApp",
+                "extensionPointId": "patientDashboard.secondColumnFragments",
+                "extensionParams": {
+                    "fragment": "checkMessages"
+                },
+                "icon": "icon-envelope",
+                "order": 30,
+                "requiredPrivilege": "App: send internal messages"
+            }
+
+        ]
+    }
+]
