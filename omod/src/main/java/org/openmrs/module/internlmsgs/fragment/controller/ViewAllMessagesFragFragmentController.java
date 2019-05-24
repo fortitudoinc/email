@@ -49,7 +49,7 @@ public class ViewAllMessagesFragFragmentController {
 			String tag[] = message.getMsgTag().split("-"), tagType;
 			int tagId, senderId = message.getSenderUserId();
 			if (tag.length < 2) { //deals with old data - when setting up
-				                  // new DB delete this if statement
+				// new DB delete this if statement
 				continue;
 			}
 			tagType = tag[0];
@@ -79,7 +79,6 @@ public class ViewAllMessagesFragFragmentController {
 		}
 		
 		//InfoErrorMessageUtil.flashInfoMessage(session, "Message Saved");
-		
 		model.addAttribute("messages", allMail);
 		model.addAttribute("receivedMail", receivedMail);
 		model.addAttribute("sentMail", sentMail);
@@ -91,6 +90,9 @@ public class ViewAllMessagesFragFragmentController {
 		MessageAndRecipientsNames bundle = new MessageAndRecipientsNames();
 		User user;
 		user = userService.getUser(message.getSenderUserId());
+		if (user == null) { // check if user was deleted so user is not found
+			return null;
+		}
 		bundle.setSenderName(user.getGivenName() + " " + user.getFamilyName());
 		//System.out.println("SENDER NAME: " + user.getGivenName() + " " + user.getFamilyName());
 		String recipients = "";
@@ -110,6 +112,9 @@ public class ViewAllMessagesFragFragmentController {
 				continue;
 			}
 			user = userService.getUser(Integer.valueOf(recipIdStr));
+			if ((user == null) || user.getRetired()) { // check if user was deleted so user is not found
+				continue;
+			}
 			String name = user.getGivenName() + " " + user.getFamilyName() + ",";
 			recipients += name;
 		}

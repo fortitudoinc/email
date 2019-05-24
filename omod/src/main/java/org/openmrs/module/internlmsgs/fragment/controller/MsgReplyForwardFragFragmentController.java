@@ -63,23 +63,50 @@ public class MsgReplyForwardFragFragmentController {
 				continue;
 			}
 			user = userService.getUser(Integer.valueOf(recipId));
+			if (user == null) {
+				continue;
+			}
 			msgRecipients += user.getGivenName() + " " + user.getFamilyName() + ",";
 		}
 		return msgRecipients;
 	}
 	
+	/*
+	public List<SimpleObject> getUserNameSuggestions(@RequestParam(value = "query", required = false) String query,
+	    @SpringBean("userService") UserService service, UiUtils ui) {
+	List<User> allUsers = service.getAllUsers(), filteredUsers = new ArrayList<User>();
+	//System.out.println("getUserNameSuggestions");
+	String name;
+	for (User user : allUsers) {
+		if (user == null) {
+			continue;
+		}
+		name = (user.getGivenName() + user.getFamilyName()).toUpperCase();
+		if (name.indexOf(query.toUpperCase()) == 0) {
+			filteredUsers.add(user);
+		}
+	}
+	String[] properties;
+	properties = new String[4];
+	properties[0] = "givenName";
+	properties[1] = "familyName";
+	properties[2] = "roles";
+	properties[3] = "userId";
+	return SimpleObject.fromCollection(filteredUsers, ui, properties);
+	}
+	
+	*/
 	public List<SimpleObject> getUserNameSuggestions(@RequestParam(value = "query", required = false) String query,
 	        @SpringBean("userService") UserService service, UiUtils ui) {
-		List<User> allUsers = service.getAllUsers(), filteredUsers = new ArrayList<User>();
-		//System.out.println("getUserNameSuggestions");
+		List<User> filteredUsers = getActiveUsers(service), suggestedUsers = new ArrayList<User>();
 		String name;
-		for (User user : allUsers) {
+		for (User user : filteredUsers) {
 			if (user == null) {
 				continue;
 			}
 			name = (user.getGivenName() + user.getFamilyName()).toUpperCase();
 			if (name.indexOf(query.toUpperCase()) == 0) {
-				filteredUsers.add(user);
+				suggestedUsers.add(user);
 			}
 		}
 		String[] properties;
@@ -88,7 +115,22 @@ public class MsgReplyForwardFragFragmentController {
 		properties[1] = "familyName";
 		properties[2] = "roles";
 		properties[3] = "userId";
-		return SimpleObject.fromCollection(filteredUsers, ui, properties);
+		return SimpleObject.fromCollection(suggestedUsers, ui, properties);
+	}
+	
+	private List<User> getActiveUsers(UserService service) {
+		List<User> allUsers = service.getAllUsers();
+		List<User> filteredUsers = new ArrayList<User>();
+		for (User user : allUsers) {
+			System.out.print("User: " + user.getGivenName() + " " + user.getFamilyName());
+			if (!user.getRetired()) {
+				filteredUsers.add(user);
+				System.out.println();
+			} else {
+				System.out.println("REMOVED");
+			}
+		}
+		return filteredUsers;
 	}
 	
 	public List<SimpleObject> getAllUsers(@SpringBean("userService") UserService userService, UiUtils ui) {

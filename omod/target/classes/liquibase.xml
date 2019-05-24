@@ -6,12 +6,12 @@
                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
  
  
-    <changeSet id="levinemessage-1" author="levine">
+    <changeSet id="levineemail-1" author="levine">
         <sql>
             drop table if exists internalmessages;
         </sql>
     </changeSet>
-    <changeSet id="levinemessage-2" author="levine">
+    <changeSet id="levineemail-2" author="levine">
         <preConditions onFail="WARN" onError="WARN">
             <not>
                 <tableExists tableName="internalmessages" />

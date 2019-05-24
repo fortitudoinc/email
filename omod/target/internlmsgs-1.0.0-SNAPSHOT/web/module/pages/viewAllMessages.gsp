@@ -18,7 +18,6 @@
 </script>
 
 
-
 ${ ui.includeFragment("internlmsgs", "viewAllMessagesFrag") }
 
 <script type="text/javascript">

@@ -36,12 +36,12 @@ public class ComposeMessageFragFragmentController {
 	 * registered trademark and the OpenMRS graphic logo is a trademark of OpenMRS Inc.
 	 */
 	public void controller(FragmentModel model, @SpringBean("userService") UserService service) {
-		List<User> users = service.getAllUsers();
+		List<User> filteredUsers = getActiveUsers(service);
 		ArrayList<String> usersInfo = new ArrayList<String>();
 		String userInfo;
 		String userRoles;
 		Set<Role> roles;
-		for (User user : users) {
+		for (User user : filteredUsers) {
 			if (user == null) {
 				continue;
 			}
@@ -60,17 +60,28 @@ public class ComposeMessageFragFragmentController {
 	
 	public List<SimpleObject> getUserNameSuggestions(@RequestParam(value = "query", required = false) String query,
 	        @SpringBean("userService") UserService service, UiUtils ui) {
-		List<User> allUsers = service.getAllUsers(), filteredUsers = new ArrayList<User>();
+		List<User> filteredUsers = getActiveUsers(service), suggestedUsers = new ArrayList<User>();
 		String name;
-		for (User user : allUsers) {
+		for (User user : filteredUsers) {
 			if (user == null) {
 				continue;
 			}
 			name = (user.getGivenName() + user.getFamilyName()).toUpperCase();
 			if (name.indexOf(query.toUpperCase()) == 0) {
-				filteredUsers.add(user);
+				suggestedUsers.add(user);
 			}
 		}
+		String[] properties;
+		properties = new String[4];
+		properties[0] = "givenName";
+		properties[1] = "familyName";
+		properties[2] = "roles";
+		properties[3] = "userId";
+		return SimpleObject.fromCollection(suggestedUsers, ui, properties);
+	}
+	
+	public List<SimpleObject> getAllUsers(@SpringBean("userService") UserService service, UiUtils ui) {
+		List<User> filteredUsers = getActiveUsers(service);
 		String[] properties;
 		properties = new String[4];
 		properties[0] = "givenName";
@@ -80,15 +91,19 @@ public class ComposeMessageFragFragmentController {
 		return SimpleObject.fromCollection(filteredUsers, ui, properties);
 	}
 	
-	public List<SimpleObject> getAllUsers(@SpringBean("userService") UserService service, UiUtils ui) {
-		List<User> allUsers = service.getAllUsers(), filteredUsers = new ArrayList<User>();
-		String[] properties;
-		properties = new String[4];
-		properties[0] = "givenName";
-		properties[1] = "familyName";
-		properties[2] = "roles";
-		properties[3] = "userId";
-		return SimpleObject.fromCollection(allUsers, ui, properties);
+	private List<User> getActiveUsers(UserService service) {
+		List<User> allUsers = service.getAllUsers();
+		List<User> filteredUsers = new ArrayList<User>();
+		for (User user : allUsers) {
+			System.out.print("User: " + user.getGivenName() + " " + user.getFamilyName());
+			if (!user.getRetired()) {
+				filteredUsers.add(user);
+				System.out.println();
+			} else {
+				System.out.println("REMOVED");
+			}
+		}
+		return filteredUsers;
 	}
 	
 	public void saveMessage(@RequestParam(value = "subject", required = false) String subject,
