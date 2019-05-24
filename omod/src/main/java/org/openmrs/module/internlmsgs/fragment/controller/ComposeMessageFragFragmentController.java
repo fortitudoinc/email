@@ -98,9 +98,9 @@ public class ComposeMessageFragFragmentController {
 			System.out.print("User: " + user.getGivenName() + " " + user.getFamilyName());
 			if (!user.getRetired()) {
 				filteredUsers.add(user);
-				System.out.println();
+				//System.out.println();
 			} else {
-				System.out.println("REMOVED");
+				//System.out.println("REMOVED");
 			}
 		}
 		return filteredUsers;
