@@ -37,4 +37,12 @@
         </createTable>
     </changeSet>
  
+ <changeSet id="levineemail-3" author="levine">
+		<comment>
+			Add the column to indicate if message has been read
+		</comment>
+		<addColumn tableName="internalmessages">
+			<column name="msg_hasBeenRead" type="int" />
+		</addColumn>
+	</changeSet>
 </databaseChangeLog>

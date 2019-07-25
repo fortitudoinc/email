@@ -21,6 +21,7 @@
         <property name="isDeleted" column="deleted" not-null="true" ></property>           
         <property name="isTrashed" column="trashed" not-null="true" ></property>           
         <property name="isDraft" column="draft" not-null="true" ></property>   
-        <property name="msgRecipients" column="recipients" not-null="true" type="java.lang.String" length="255"></property>                       
+        <property name="msgRecipients" column="recipients" not-null="true" type="java.lang.String" length="255"></property>
+        <property name="msgHasBeenRead" column="msg_hasBeenRead" not-null="true" ></property>           
     </class>   
 </hibernate-mapping>

@@ -38,6 +38,16 @@ public class InternlMessage extends BaseOpenmrsData implements Serializable {
 	
 	private String msgRecipients;
 	
+	private int msgHasBeenRead;
+	
+	public int getMsgHasBeenRead() {
+		return msgHasBeenRead;
+	}
+	
+	public void setMsgHasBeenRead(int msgHasBeenRead) {
+		this.msgHasBeenRead = msgHasBeenRead;
+	}
+	
 	public int getSenderUserId() {
 		return senderUserId;
 	}

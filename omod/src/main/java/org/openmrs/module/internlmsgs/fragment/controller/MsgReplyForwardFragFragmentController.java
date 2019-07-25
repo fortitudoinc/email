@@ -179,6 +179,7 @@ public class MsgReplyForwardFragFragmentController {
 		msg.setMsgPriority(0);
 		msg.setIsTrashed(0);
 		msg.setMsgRecipients(recipientUserIds);
+		msg.setMsgHasBeenRead(0);
 		//System.out.println("MESSAGE SAVED SUCCESSFULLYjj\n" + msg.stringRep());
 		InternlMessage m = Context.getService(InternlMessageService.class).saveInternlMessage(msg);
 		

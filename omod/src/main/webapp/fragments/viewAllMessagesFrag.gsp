@@ -114,6 +114,13 @@ var lastTrashRecipientNames;
 jq = jQuery;
 jq(function() { 
 
+jq('#inboxTable > tbody > tr').each(function() {
+aaHiddenField = jq(this).find("input[type='hidden']").val();
+if (aaHiddenField == 0) {
+    //this.style.backgroundColor = "red";
+jq(this).css("font-weight","bold");
+}
+});
 
 
     jq("#deleteAllMessagesInTrash").click(function() {
@@ -433,7 +440,7 @@ jq( "#dialog-confirm-amessage" ).dialog({
             }
 
 
-            function selectMessageInbox(row,msgId,senderName,subject,date,body,recipientsNames) {
+            function selectMessageInbox(row,msgId,senderName,subject,date,body,hasBeenRead,recipientsNames) {
                 document.getElementById("viewMessageDiv").style.display = "block";
                 removeRowHilite(lastInboxRowSelected);
                 lastInboxRowSelected = row;
@@ -443,6 +450,18 @@ jq( "#dialog-confirm-amessage" ).dialog({
                 document.getElementById("replyDiv").style.display = "block";
                 document.getElementById("continueDraftDiv").style.display = "none";
                 setReplyForward(msgId);
+                if (hasBeenRead == 1) {
+                    return;
+                    }
+               jq.getJSON('${ ui.actionLink("setMessageHasBeenRead") }',
+                    {
+                      'messageId': msgId
+                    })
+                .success(function() {
+                    //removeRowHilite(row);
+                    jq(row).css("font-weight","");
+                    emr.successMessage("Message Has Been Read");
+                });
             } 
             function setReplyForward(msgId) {
                     var replyForward = "/" + OPENMRS_CONTEXT_PATH + 
@@ -664,9 +683,9 @@ INBOX
   <% if (receivedMail) { %>
      <% receivedMail.each { %>
       <tr onclick="selectMessageInbox(this,'$it.message.id','$it.senderName','$it.message.msgSubject','$it.message.msgDate',
-    `$it.message.msgBody`,'$it.recipientsNames')">
+    `$it.message.msgBody`,`$it.message.msgHasBeenRead`,'$it.recipientsNames')">
 <td><em class="icon-trash delete-action" title="Trash Mail"  onclick="trashMail(event,this,$it.message.id,'$it.message.msgTag')"></em></td>
-<td >${ ui.format(it.senderName)}</td>
+<td >${ ui.format(it.senderName)}<input type="hidden" value="$it.message.msgHasBeenRead"/></td>
 <td>${ ui.format(it.message.msgSubject)}</td>
 <td>${ ui.format(it.message.msgDate)}</td>
 <td>${ ui.format(it.recipientsNames)}</td>

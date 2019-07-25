@@ -78,6 +78,7 @@ public class ComposeMessagePageController {
 		msg.setMsgPriority(0);
 		msg.setIsTrashed(0);
 		msg.setMsgRecipients(recipientUserIds);
+		msg.setMsgHasBeenRead(0);
 		InternlMessage m = Context.getService(InternlMessageService.class).saveInternlMessage(msg);
 		
 		if (sendOrDraft.equals("draft")) {

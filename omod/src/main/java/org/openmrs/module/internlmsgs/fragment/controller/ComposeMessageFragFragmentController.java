@@ -133,6 +133,7 @@ public class ComposeMessageFragFragmentController {
 		msg.setMsgPriority(0);
 		msg.setIsTrashed(0);
 		msg.setMsgRecipients(recipientUserIds);
+		msg.setMsgHasBeenRead(0);
 		System.out.println("BEFORE MESSAGE SAVED\n" + msg.stringRep());
 		InternlMessage m = Context.getService(InternlMessageService.class).saveInternlMessage(msg);
 		System.out.println("MESSAGE SAVED SUCCESSFULLY\n" + msg.stringRep());

@@ -143,4 +143,10 @@ public class ViewAllMessagesFragFragmentController {
 		Context.getService(InternlMessageService.class).saveInternlMessage(msg);
 	}
 	
+	public void setMessageHasBeenRead(@RequestParam("messageId") int messageId) {
+		InternlMessage msg = Context.getService(InternlMessageService.class).getInternlMessage(messageId);
+		msg.setMsgHasBeenRead(1);
+		Context.getService(InternlMessageService.class).saveInternlMessage(msg);
+	}
+	
 }
