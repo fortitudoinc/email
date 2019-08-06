@@ -1,2 +1,4 @@
-omod
 .idea
+api/target/*
+omod/target/*
+.DS_Store
