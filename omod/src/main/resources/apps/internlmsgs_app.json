@@ -17,16 +17,6 @@
                 "url": "internlmsgs/viewAllMessages.page",
                 "icon": "icon-envelope",
                 "requiredPrivilege": "App: send internal messages"
-            },
-            {
-                "id": "${project.parent.artifactId}.internlmsgApp",
-                "extensionPointId": "patientDashboard.secondColumnFragments",
-                "extensionParams": {
-                    "fragment": "checkMessages"
-                },
-                "icon": "icon-envelope",
-                "order": 30,
-                "requiredPrivilege": "App: send internal messages"
             }
 
         ]
